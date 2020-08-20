@@ -46,6 +46,10 @@ def read_corpus(dir_path, vocab_path):
                 sents_tgt.append(title)
                 # print(2333)
     print("新闻共: " + str(len(sents_src)) + "篇")
+    random.seed(22)
+    random.shuffle(sents_src)
+    random.seed(22)
+    random.shuffle(sents_tgt)
     return sents_src, sents_tgt
 
 class BertDataset(Dataset):

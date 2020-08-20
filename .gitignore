@@ -134,3 +134,4 @@ dmypy.json
 .vscode
 .git
 *.log
+*.bin

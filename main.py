@@ -1,4 +1,4 @@
-## 摘要自动生成的例子
+# 标题自动生成的例子
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -72,9 +72,11 @@ class SummarizationModelTrainer:
         for token_ids, token_type_ids, target_ids, att_mask in dataloader:
             if step % 300 == 0:
                 self.bert_model.eval()
-                text = random.choice(self.sents_src)
-                print(self.bert_model.generate(text, beam_size=3, device=self.device, is_poem=False))
-                # print("Real Title: ", title)
+                idx = random.randint(0, len(self.sents_src)-1)
+                text = self.sents_src[idx]
+                title = self.sents_tgt[idx]
+                print("Generated Title: ", self.bert_model.generate(text, beam_size=3, device=self.device, is_poem=False))
+                print("Real      Title: ", title)
                 self.bert_model.train()
 
             token_ids = token_ids.to(self.device)
