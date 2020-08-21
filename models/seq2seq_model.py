@@ -33,6 +33,8 @@ class Seq2SeqModel(nn.Module):
         if model_name == "roberta":
             config = BertConfig(len(self.word2ix))
             self.bert = BertModel(config)
+            # dense_weight = self.bert.pooler.dense.weight
+            # dense_bias = self.bert.pooler.dense.bias
             self.decoder = BertLMPredictionHead(config, self.bert.embeddings.word_embeddings.weight)
             # self.decoder：对BertModel最后输出层的一些线性层的衔接
         self.hidden_dim = config.hidden_size
@@ -57,11 +59,13 @@ class Seq2SeqModel(nn.Module):
         batch_size = input_shape[0]
         seq_len = input_shape[1]
 
+        # Bert编码
         enc_layers, _ = self.bert(input_tensor, position_ids=position_enc, token_type_ids=token_type_id, attention_mask=attention_mask, 
                                     output_all_encoded_layers=True)
         squence_out = enc_layers[-1] ## 取出来最后一层输出
         # sequence_out: 3*227*768
 
+        # 对输出最后层进行计算，得到预测的单词
         predictions = self.decoder(squence_out)
         # predictions:3, 227, 21128
 

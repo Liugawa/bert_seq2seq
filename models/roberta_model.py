@@ -321,6 +321,9 @@ class BertPredictionHeadTransform(nn.Module):
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.transform_act_fn = ACT2FN[config.hidden_act]
         self.LayerNorm = BertLayerNorm(config.hidden_size, eps=config.layer_norm_eps)
+        ###############################
+        # 这里需要导入参数
+        ###############################
 
     def forward(self, hidden_states):
         """一个线性层、激活、LayerNorm：对BertModel最后层输出进行处理"""
@@ -339,16 +342,16 @@ class BertLMPredictionHead(nn.Module):
         # an output-only bias for each token.
         self.decoder = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
 
-        self.decoder.weight = bert_model_embedding_weights  # 使用BertModel的nn.Embedding层的参数，这个操作值得深思
-        self.bias = nn.Parameter(torch.zeros(config.vocab_size))
+        # self.decoder.weight = bert_model_embedding_weights  # 使用BertModel的nn.Embedding层的参数，这个操作值得深思
+        # self.bias = nn.Parameter(torch.zeros(config.vocab_size))
 
         # Need a link between the two variables so that the bias is correctly resized with `resize_token_embeddings`
-        self.decoder.bias = self.bias
+        # self.decoder.bias = self.bias
 
     def forward(self, hidden_states):
         """可以理解为：对BertModel的输出层进行线性衔接"""
         hidden_states = self.transform(hidden_states)
-        hidden_states = self.decoder(hidden_states)
+        hidden_states = self.decoder(hidden_states)  # 其实就是一个embedding层
         return hidden_states
 
 

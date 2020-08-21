@@ -20,8 +20,8 @@ from data_loader.dataloader import *
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 
-class SummarizationModelTrainer:
-    # 控制训练过程，保存模型，等
+class TitleModelTrainer:
+    # 标题生成模型：控制训练过程，保存模型，等
     def __init__(self):
         # 加载数据
         data_dir = r"/home/ai/yangwei/text_summarization/THUCNews"
@@ -114,7 +114,7 @@ class SummarizationModelTrainer:
 
 if __name__ == '__main__':
 
-    trainer = SummarizationModelTrainer()
+    trainer = TitleModelTrainer()
     train_epoches = 50
     for epoch in range(train_epoches):
         # 训练一个epoch
